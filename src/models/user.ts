@@ -2,6 +2,8 @@ import { Schema, model, Document } from 'mongoose';
 
 // Interface TypeScript pour typer un utilisateur
 export interface IUser extends Document {
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
 }
@@ -9,6 +11,16 @@ export interface IUser extends Document {
 // Schéma Mongoose
 const userSchema = new Schema<IUser>(
   {
+    firstname: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    lastname: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     email: {
       type: String,
       required: true,

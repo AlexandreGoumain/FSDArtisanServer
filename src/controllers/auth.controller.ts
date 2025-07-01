@@ -11,8 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret_key';
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { email, password } = userRegisterValidation.parse(req.body);
-
+        const { email, password, firstname, lastname} = userRegisterValidation.parse(req.body);
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             standardResponse(res, 400, 'Email déjà utilisé.');
@@ -21,7 +20,7 @@ export const register = async (req: Request, res: Response) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = new User({ email, password: hashedPassword });
+        const newUser = new User({ email, password: hashedPassword, firstname, lastname });
         await newUser.save();
 
         standardResponse(res, 201, 'Utilisateur créé avec succès.');
