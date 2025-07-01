@@ -3,6 +3,7 @@ import { Document, Schema, model } from "mongoose";
 // Interface TypeScript pour typer un utilisateur
 export interface IRessource extends Document {
     name: string;
+    description: string;
     idCategory: Schema.Types.ObjectId;
     idSupplier: Schema.Types.ObjectId;
 }
@@ -11,6 +12,11 @@ export interface IRessource extends Document {
 const ressourceSchema = new Schema<IRessource>(
     {
         name: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        description: {
             type: String,
             required: true,
             trim: true,

@@ -4,6 +4,7 @@ import { Document, Schema, model } from "mongoose";
 export interface IFurniture extends Document {
     name: string;
     idCategory: Schema.Types.ObjectId; // Référence à la catégorie
+    description: string;
     ressources: Array<{
         idRessource: Schema.Types.ObjectId; // Référence à la ressource
         quantity: number; // Quantité de la ressource
@@ -13,47 +14,69 @@ export interface IFurniture extends Document {
 }
 
 // Schéma Mongoose
-const furnitureSchema = new Schema<IFurniture>(
-    {
-        name: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        quantity: {
-            type: Number,
-            required: true,
-            min: 0, // Quantité ne peut pas être négative
-        },
-        idCategory: {
-            type: Schema.Types.ObjectId,
-            ref: "Category", // Référence au modèle Category
-            required: true,
-        },
-        ressources: [
-            {
-                idRessource: {
-                    type: Schema.Types.ObjectId,
-                    ref: "Ressource", // Référence au modèle Ressource
-                    required: true,
-                },
-                quantity: {
-                    type: Number,
-                    required: true,
-                    min: 0, // Quantité de la ressource ne peut pas être négative
-                },
-            },
-        ],
-        status: {
-            type: String,
-            required: true,
-            enum: ["waiting", "in_production", "ready_to_sell"], // Énumération des états possibles
-        },
+const furnitureSchema = new Schema<IFurniture>({
+    name: {
+        type: String,
+        required: true,
+        trim: true,
     },
-    {
-        timestamps: true, // Ajoute createdAt et updatedAt
-    }
-);
+    description: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    quantity: {
+        type: Number,
+        required: true,
+        min: 0, // Quantité ne peut pas être négative
+    },
+    idCategory: {
+        type: Schema.Types.ObjectId,
+        ref: "Category", // Référence au modèle Category
+        required: true,
+    },
+    ressources: [
+        {
+            idRessource: {
+                type: Schema.Types.ObjectId,
+                ref: "Ressource", // Référence au modèle Ressource
+                required: true,
+            },
+            quantity: {
+                type: Number,
+                required: true,
+                min: 0, // Quantité ne peut pas être négative
+            },
+            idCategory: {
+                type: Schema.Types.ObjectId,
+                ref: "Category", // Référence au modèle Category
+                required: true,
+            },
+            ressources: [
+                {
+                    idRessource: {
+                        type: Schema.Types.ObjectId,
+                        ref: "Ressource", // Référence au modèle Ressource
+                        required: true,
+                    },
+                    quantity: {
+                        type: Number,
+                        required: true,
+                        min: 0, // Quantité de la ressource ne peut pas être négative
+                    },
+                },
+            ],
+            status: {
+                type: String,
+                required: true,
+                enum: ["waiting", "in_production", "ready_to_sell"], // Énumération des états possibles
+            },
+        },
+        {
+            timestamps: true, // Ajoute createdAt et updatedAt
+        },
+    ],
+});
 
 // Modèle Mongoose
 const Furniture = model<IFurniture>("Furniture", furnitureSchema);

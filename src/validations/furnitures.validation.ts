@@ -1,16 +1,17 @@
 import { z } from "zod";
-import Category from "../models/furnitureCategories";
+import FurnitureCategory from "../models/furnitureCategories";
 import Ressource from "../models/ressources";
 
 export const createFurnitureValidation = z.object({
     name: z.string().min(1, "Le nom est requis"),
+    description: z.string().nullable(),
     quantity: z
         .number()
         .int()
         .nonnegative("La quantité doit être un nombre entier positif"),
     idCategory: z.string().refine(async (idCategory) => {
         // Vérification en DB que l'id de la catégorie existe
-        const category = await Category.findById(idCategory);
+        const category = await FurnitureCategory.findById(idCategory);
         if (!category) {
             return false;
         }

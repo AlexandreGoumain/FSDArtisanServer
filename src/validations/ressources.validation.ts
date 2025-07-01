@@ -4,6 +4,7 @@ import Supplier from "../models/suppliers";
 
 export const createRessourceValidation = z.object({
     name: z.string().min(1, "Le nom de la ressource est requis"),
+    description: z.string().nullable(),
     idCategory: z.string().refine(async (idCategory) => {
         // Vérification en DB que l'id de la catégorie existe
         const category = await RessourceCategory.findById(idCategory);

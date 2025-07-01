@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
+import { z } from "zod";
 import Furniture from "../models/furnitures";
 import standardResponse from "../utils/standardResponse";
 import { createFurnitureValidation } from "../validations/furnitures.validation";
-import { z } from "zod";
 
 export const getAllFurnitures = async (req: Request, res: Response) => {
     try {
@@ -43,10 +43,11 @@ export const getFurnitureById = async (req: Request, res: Response) => {
 
 export const createFurniture = async (req: Request, res: Response) => {
     try {
-        const { name, idCategory, quantity, ressources, status } =
+        const { name, description, idCategory, quantity, ressources, status } =
             await createFurnitureValidation.parseAsync(req.body);
         const newFurniture = new Furniture({
             name,
+            description,
             idCategory,
             quantity,
             ressources,
@@ -70,11 +71,11 @@ export const createFurniture = async (req: Request, res: Response) => {
 
 export const updateFurniture = async (req: Request, res: Response) => {
     try {
-        const { name, idCategory, quantity, ressources, status } =
+        const { name, description, idCategory, quantity, ressources, status } =
             await createFurnitureValidation.parseAsync(req.body);
         const furniture = await Furniture.findByIdAndUpdate(
             req.params.id,
-            { name, idCategory, quantity, ressources, status },
+            { name, description, idCategory, quantity, ressources, status },
             { new: true }
         );
         if (!furniture) {
