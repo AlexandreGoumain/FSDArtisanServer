@@ -28,8 +28,8 @@ export const getFurnitureById = async (req: Request, res: Response) => {
 
 export const createFurniture = async (req: Request, res: Response) => {
     try {
-        const {name, idCategory, quantity, ressources, status} = await createFurnitureValidation.parseAsync(req.body);
-        const newFurniture = new Furniture({name, idCategory, quantity, ressources, status});
+        const {name, description, idCategory, quantity, ressources, status} = await createFurnitureValidation.parseAsync(req.body);
+        const newFurniture = new Furniture({name, description, idCategory, quantity, ressources, status});
         await newFurniture.save();
         standardResponse(res, 201, 'Meuble créé avec succès.', newFurniture);
     } catch (error) {
@@ -44,10 +44,10 @@ export const createFurniture = async (req: Request, res: Response) => {
 
 export const updateFurniture = async (req: Request, res: Response) => {
     try {
-        const {name, idCategory, quantity, ressources, status} = await createFurnitureValidation.parseAsync(req.body);
+        const {name, description, idCategory, quantity, ressources, status} = await createFurnitureValidation.parseAsync(req.body);
         const furniture = await Furniture.findByIdAndUpdate(
             req.params.id,
-            {name, idCategory, quantity, ressources, status},
+            {name, description, idCategory, quantity, ressources, status},
             {new: true}
         );
         if (!furniture) {

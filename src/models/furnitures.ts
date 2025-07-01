@@ -4,6 +4,7 @@ import { Schema, model, Document } from 'mongoose';
 export interface IFurniture extends Document {
     name: string;
     idCategory: Schema.Types.ObjectId; // Référence à la catégorie
+    description: string;
     ressources: Array<{
         idRessource: Schema.Types.ObjectId; // Référence à la ressource
         quantity: number; // Quantité de la ressource
@@ -16,6 +17,11 @@ export interface IFurniture extends Document {
 const furnitureSchema = new Schema<IFurniture>(
   {
     name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
       type: String,
       required: true,
       trim: true,

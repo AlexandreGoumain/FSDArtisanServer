@@ -28,8 +28,8 @@ export const getRessourceById = async (req: Request, res: Response) => {
 
 export const createRessource = async (req: Request, res: Response) => {
     try {
-        const { name, idCategory, idSupplier } = await createRessourceValidation.parseAsync(req.body);
-        const newRessource = new Ressource({ name, idCategory, idSupplier });
+        const { name, description, idCategory, idSupplier } = await createRessourceValidation.parseAsync(req.body);
+        const newRessource = new Ressource({ name, description, idCategory, idSupplier });
         await newRessource.save();
         standardResponse(res, 201, 'Ressource créée avec succès.', newRessource);
     } catch (error) {
@@ -43,10 +43,10 @@ export const createRessource = async (req: Request, res: Response) => {
 
 export const updateRessource = async (req: Request, res: Response) => {
     try {
-        const { name, idCategory, idSupplier } = await createRessourceValidation.parseAsync(req.body);
+        const { name, description, idCategory, idSupplier } = await createRessourceValidation.parseAsync(req.body);
         const ressource = await Ressource.findByIdAndUpdate(
             req.params.id,
-            { name, idCategory, idSupplier },
+            { name, description, idCategory, idSupplier },
             { new: true }
         );
         if (!ressource) {
