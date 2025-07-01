@@ -1,23 +1,28 @@
-import { Router } from 'express';
-import { getAllFurnitures, getFurnitureById, createFurniture, updateFurniture, deleteFurniture } from '../controllers/furnitures.controller';
-import { isAuthenticated } from '../middlewares/isAuthenticated';
+import { Router } from "express";
+import {
+    createFurniture,
+    deleteFurniture,
+    getAllFurnitures,
+    getFurnitureById,
+    updateFurniture,
+} from "../controllers/furnitures.controller";
+import { isAuthenticated } from "../middlewares/isAuthenticated";
 
 const router = Router();
 
 // Route to get all furnitures
-router.get('/', isAuthenticated, getAllFurnitures);
+router.get("/", isAuthenticated, getAllFurnitures);
 
 // Route to get a single furniture by ID
-router.get('/:id', isAuthenticated, getFurnitureById);
+router.get("/:id", isAuthenticated, getFurnitureById);
 
 // Route to create a new furniture
-router.post('/', isAuthenticated, createFurniture);
+router.post("/", isAuthenticated, createFurniture);
 
 // Route to update a furniture by ID
-router.put('/:id', isAuthenticated, updateFurniture);
+router.put("/:id", isAuthenticated, updateFurniture);
 
 // Route to delete a furniture by ID
-router.delete('/:id', isAuthenticated, deleteFurniture);
-
+router.delete("/:id", isAuthenticated, deleteFurniture);
 
 export default router;

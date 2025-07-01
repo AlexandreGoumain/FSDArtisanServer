@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import Supplier from '../models/suppliers';
-import RessourceCategory from '../models/ressourceCategories';
+import { z } from "zod";
+import RessourceCategory from "../models/ressourceCategories";
+import Supplier from "../models/suppliers";
 
 export const createRessourceValidation = z.object({
     name: z.string().min(1, "Le nom de la ressource est requis"),
@@ -19,5 +19,5 @@ export const createRessourceValidation = z.object({
             return false;
         }
         return true;
-    }, "L'id du fournisseur ne correspond à aucun fournisseur existant")
-})
+    }, "L'id du fournisseur ne correspond à aucun fournisseur existant"),
+});

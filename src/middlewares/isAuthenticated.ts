@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import standardResponse from '../utils/standardResponse';
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import standardResponse from "../utils/standardResponse";
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret_key';
+const JWT_SECRET = process.env.JWT_SECRET || "secret_key";
 
 export const isAuthenticated = (
     request: Request,
@@ -12,7 +12,7 @@ export const isAuthenticated = (
     const { token } = request.cookies; // on récupére le cookie "token" qui contient le JWT
 
     if (!token)
-        standardResponse(response, 401, 'Vous devez être connecté', null);
+        standardResponse(response, 401, "Vous devez être connecté", null);
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
@@ -20,6 +20,6 @@ export const isAuthenticated = (
         response.locals.user = decoded;
         next();
     } catch (err: any) {
-        standardResponse(response, 401, 'Token invalide', null);
+        standardResponse(response, 401, "Token invalide", null);
     }
 };

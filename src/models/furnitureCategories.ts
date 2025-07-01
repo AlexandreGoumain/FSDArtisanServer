@@ -1,25 +1,28 @@
-import { Schema, model, Document } from 'mongoose';
+import { Document, Schema, model } from "mongoose";
 
 // Interface TypeScript pour typer un utilisateur
 export interface IFurnitureCategory extends Document {
-  label: string;
+    label: string;
 }
 
 // Schéma Mongoose
 const furnitureCategorySchema = new Schema<IFurnitureCategory>(
-  {
-    label: {
-      type: String,
-      required: true,
-      trim: true,
+    {
+        label: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+    },
+    {
+        timestamps: true, // Ajoute createdAt et updatedAt
     }
-  },
-  {
-    timestamps: true, // Ajoute createdAt et updatedAt
-  }
 );
 
 // Modèle Mongoose
-const FurnitureCategory = model<IFurnitureCategory>('FurnitureCategory', furnitureCategorySchema);
+const FurnitureCategory = model<IFurnitureCategory>(
+    "FurnitureCategory",
+    furnitureCategorySchema
+);
 
 export default FurnitureCategory;
