@@ -47,6 +47,9 @@ export const getRessourceById = async (req: Request, res: Response) => {
 };
 
 export const createRessource = async (req: Request, res: Response) => {
+    //TODO : Add missing fiels (ref to postman)
+    //TODO : check model
+
     try {
         const { name, description, idCategory, idSupplier } =
             await createRessourceValidation.parseAsync(req.body);
@@ -78,6 +81,9 @@ export const createRessource = async (req: Request, res: Response) => {
 };
 
 export const updateRessource = async (req: Request, res: Response) => {
+    //TODO : Add missing fiels (ref to postman)
+    //TODO : put id to update in req.body instead of req.params
+
     try {
         const { name, description, idCategory, idSupplier } =
             await createRessourceValidation.parseAsync(req.body);

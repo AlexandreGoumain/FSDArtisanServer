@@ -47,6 +47,9 @@ export const getSupplierById = async (req: Request, res: Response) => {
 };
 
 export const createSupplier = async (req: Request, res: Response) => {
+    //TODO : add missing fields (ref to postman)
+    //TODO : check model
+
     try {
         const { name } = await createSupplierValidation.parseAsync(req.body);
         const newSupplier = new Supplier({ name });
@@ -72,6 +75,9 @@ export const createSupplier = async (req: Request, res: Response) => {
 };
 
 export const updateSupplier = async (req: Request, res: Response) => {
+    //TODO : add missing fields (ref to postman)
+    //TODO : check model
+
     try {
         const { name } = await createSupplierValidation.parseAsync(req.body);
         const supplier = await Supplier.findByIdAndUpdate(
