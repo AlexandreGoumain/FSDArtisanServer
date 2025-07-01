@@ -14,7 +14,12 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || '';
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*', // Autoriser toutes les origines
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
+  credentials: true, // Autoriser les cookies
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
