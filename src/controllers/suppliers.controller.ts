@@ -111,11 +111,6 @@ export const updateSupplier = async (req: Request, res: Response) => {
 export const deleteSupplier = async (req: Request, res: Response) => {
   try {
     const idSupplier = req.params.id;
-    const supplier = await Supplier.findByIdAndDelete(idSupplier);
-    if (!supplier) {
-      standardResponse(res, 404, "Fournisseur non trouvé.");
-      return;
-    }
 
     // Recherche des ressources liées
     const linkedRessources = await Ressource.find({ idSupplier }).select("_id");
@@ -129,6 +124,12 @@ export const deleteSupplier = async (req: Request, res: Response) => {
         "Impossible de supprimer ce fournisseur : il est encore référencé dans des ressources.",
         { linkedRessourceIds: linkedIds }
       );
+    }
+
+    const supplier = await Supplier.findByIdAndDelete(idSupplier);
+    if (!supplier) {
+      standardResponse(res, 404, "Fournisseur non trouvé.");
+      return;
     }
 
     standardResponse(res, 200, "Fournisseur supprimé avec succès.", supplier);
