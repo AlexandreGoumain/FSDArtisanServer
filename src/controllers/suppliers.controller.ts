@@ -117,15 +117,17 @@ export const deleteSupplier = async (req: Request, res: Response) => {
       return;
     }
 
-    const linkedRessourcesCount = await Ressource.countDocuments({
-      idSupplier: idSupplier,
-    });
+    // Recherche des ressources liées
+    const linkedRessources = await Ressource.find({ idSupplier }).select("_id");
 
-    if (linkedRessourcesCount > 0) {
+    if (linkedRessources.length > 0) {
+      const linkedIds = linkedRessources.map((r) => r._id);
+
       return standardResponse(
         res,
         400,
-        "Impossible de supprimer ce fournisseur : il est encore référencé dans des ressources."
+        "Impossible de supprimer ce fournisseur : il est encore référencé dans des ressources.",
+        { linkedRessourceIds: linkedIds }
       );
     }
 

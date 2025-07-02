@@ -96,26 +96,30 @@ export const updateRessource = async (req: Request, res: Response) => {
   }
 };
 
+
 export const deleteRessource = async (req: Request, res: Response) => {
   try {
     const ressourceId = req.params.id;
-    const ressource = await Ressource.findByIdAndDelete(ressourceId);
-    if (!ressource) {
-      standardResponse(res, 404, "Ressource non trouvée.");
-      return;
-    }
 
-    // Vérifie si la ressource est utilisée dans un meuble
-    const isUsedInFurniture = await Furniture.exists({
+    // Recherche des meubles qui utilisent cette ressource
+    const referencingFurnitures = await Furniture.find({
       "ressources.idRessource": ressourceId,
-    });
+    }).select("_id");
 
-    if (isUsedInFurniture) {
+    if (referencingFurnitures.length > 0) {
+      const furnitureIds = referencingFurnitures.map((f) => f._id);
+
       return standardResponse(
         res,
         400,
-        "Impossible de supprimer cette ressource : elle est encore utilisée dans un ou plusieurs meubles."
+        "Impossible de supprimer cette ressource : elle est encore utilisée dans un ou plusieurs meubles.",
+        { referencingFurnitureIds: furnitureIds }
       );
+    }
+
+    const ressource = await Ressource.findByIdAndDelete(ressourceId);
+    if (!ressource) {
+      return standardResponse(res, 404, "Ressource non trouvée.");
     }
 
     standardResponse(res, 200, "Ressource supprimée avec succès.", ressource);
