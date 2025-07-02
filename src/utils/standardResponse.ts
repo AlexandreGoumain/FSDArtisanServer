@@ -11,8 +11,7 @@ const standardResponse = (
         .json({
             message: message,
             data: data,
-        })
-        .send();
+        });
 };
 
 export default standardResponse;
