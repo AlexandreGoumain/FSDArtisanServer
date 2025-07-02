@@ -10,35 +10,31 @@ export const createFurnitureValidation = z.object({
     .number()
     .int()
     .nonnegative("La quantité doit être un nombre entier positif"),
-  idCategory: z
-    .string()
-    .refine((id) => mongoose.Types.ObjectId.isValid(id), {
-      message: "L'id de la catégorie n'est pas un ObjectId valide",
-    })
-    .refine(async (idCategory) => {
-      // Vérification en DB que l'id de la catégorie existe
-      const category = await FurnitureCategory.findById(idCategory);
-      if (!category) {
-        return false;
-      }
-      return true;
-    }, "L'id de la catégorie ne correspond à aucune catégorie existante"),
+  idCategory: z.string().refine(async (idCategory) => {
+    if (!mongoose.Types.ObjectId.isValid(idCategory)) {
+      return false;
+    }
+    // Vérification en DB que l'id de la catégorie existe
+    const category = await FurnitureCategory.findById(idCategory);
+    if (!category) {
+      return false;
+    }
+    return true;
+  }, "L'id de la catégorie ne correspond à aucune catégorie existante"),
   ressources: z
     .array(
       z.object({
-        idRessource: z
-          .string()
-          .refine((id) => mongoose.Types.ObjectId.isValid(id), {
-            message: "L'id de la ressource n'est pas un ObjectId valide",
-          })
-          .refine(async (idRessource) => {
-            // Vérification en DB que l'id de la ressource existe
-            const ressource = await Ressource.findById(idRessource);
-            if (!ressource) {
-              return false;
-            }
-            return true;
-          }, "L'id de la ressource ne correspond à aucune ressource existante"),
+        idRessource: z.string().refine(async (idRessource) => {
+          if (!mongoose.Types.ObjectId.isValid(idRessource)) {
+            return false;
+          }
+          // Vérification en DB que l'id de la ressource existe
+          const ressource = await Ressource.findById(idRessource);
+          if (!ressource) {
+            return false;
+          }
+          return true;
+        }, "L'id de la ressource ne correspond à aucune ressource existante"),
         quantity: z
           .number()
           .int()

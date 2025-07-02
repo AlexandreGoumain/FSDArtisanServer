@@ -8,11 +8,11 @@ export const createRessourceValidation = z.object({
   description: z.string().nullable(),
   idCategory: z
     .string()
-    .refine((id) => mongoose.Types.ObjectId.isValid(id), {
-      message: "L'id de la catégorie n'est pas un ObjectId valide",
-    })
     .refine(async (idCategory) => {
       // Vérification en DB que l'id de la catégorie existe
+      if(!mongoose.Types.ObjectId.isValid(idCategory)){
+        return false
+      }
       const category = await RessourceCategory.findById(idCategory);
       if (!category) {
         return false;
@@ -21,11 +21,11 @@ export const createRessourceValidation = z.object({
     }, "L'id de la catégorie ne correspond à aucune catégorie existante"),
   idSupplier: z
     .string()
-    .refine((id) => mongoose.Types.ObjectId.isValid(id), {
-      message: "L'id de la catégorie n'est pas un ObjectId valide",
-    })
     .refine(async (idSupplier) => {
       // Vérification en DB que l'id du fournisseur existe
+      if(!mongoose.Types.ObjectId.isValid(idSupplier)){
+        return false
+      }
       const supplier = await Supplier.findById(idSupplier);
       if (!supplier) {
         return false;
