@@ -77,7 +77,6 @@ export const createRessourceCategory = async (req: Request, res: Response) => {
 };
 
 export const updateRessourceCategory = async (req: Request, res: Response) => {
-    //TODO: récupérer id via req.body et non par req.params
     try {
         const { label } = await createRessourceCategoryValidation.parseAsync(
             req.body
