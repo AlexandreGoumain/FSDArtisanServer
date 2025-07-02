@@ -1,19 +1,25 @@
 import { Request, Response } from "express";
 import { z } from "zod";
 import Supplier from "../models/suppliers";
+import Ressource from "../models/ressources";
 import standardResponse from "../utils/standardResponse";
 import { createSupplierValidation } from "../validations/suppliers.validation";
+import { enrichSupplier } from "../utils/supplier.utils";
 
 export const getAllSuppliers = async (req: Request, res: Response) => {
-  //TODO: add ressourceCategories
   //TODO: add lastOrderDate
   try {
     const suppliers = await Supplier.find();
+
+    const enrichedSuppliers = await Promise.all(
+      suppliers.map((supplier) => enrichSupplier(supplier))
+    );
+
     standardResponse(
       res,
       200,
       "Liste des fournisseurs récupérée avec succès.",
-      suppliers
+      enrichedSuppliers
     );
   } catch (error) {
     standardResponse(
@@ -26,7 +32,6 @@ export const getAllSuppliers = async (req: Request, res: Response) => {
 };
 
 export const getSupplierById = async (req: Request, res: Response) => {
-  //TODO: add ressourceCategories
   //TODO: add lastOrderDate
   try {
     const supplier = await Supplier.findById(req.params.id);
@@ -34,7 +39,14 @@ export const getSupplierById = async (req: Request, res: Response) => {
       standardResponse(res, 404, "Fournisseur non trouvé.");
       return;
     }
-    standardResponse(res, 200, "Fournisseur récupéré avec succès.", supplier);
+    const enrichedSupplier = await enrichSupplier(supplier);
+
+    standardResponse(
+      res,
+      200,
+      "Fournisseur récupéré avec succès.",
+      enrichedSupplier
+    );
   } catch (error) {
     standardResponse(
       res,
