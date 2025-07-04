@@ -17,11 +17,12 @@ export const enrichSupplier = async (
   supplier: ISupplier
 ): Promise<EnrichedSupplier> => {
   const ressources = await Ressource.find({ idSupplier: supplier._id });
-
   const ressourceCategories = [...new Set(ressources.map((r) => r.idCategory))];
-
+  const uniqueObjectIds = Array.from(
+    new Map(ressourceCategories.map((id) => [id.toString(), id])).values()
+  );
   return {
     ...supplier.toObject(),
-    ressourceCategories,
+    uniqueObjectIds,
   };
 };
